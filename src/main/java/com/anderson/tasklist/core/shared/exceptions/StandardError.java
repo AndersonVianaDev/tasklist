@@ -1,4 +1,4 @@
-package com.anderson.tasklist.core.user.exceptions;
+package com.anderson.tasklist.core.shared.exceptions;
 
 import java.time.LocalDateTime;
 
@@ -15,5 +15,25 @@ public class StandardError {
         this.error = error;
         this.message = message;
         this.path = path;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String getPath() {
+        return path;
     }
 }

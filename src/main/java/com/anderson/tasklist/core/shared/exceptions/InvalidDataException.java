@@ -1,4 +1,4 @@
-package com.anderson.tasklist.core.user.exceptions;
+package com.anderson.tasklist.core.shared.exceptions;
 
 public class InvalidDataException extends RuntimeException {
 
