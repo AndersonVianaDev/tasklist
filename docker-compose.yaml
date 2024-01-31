@@ -1,0 +1,9 @@
+services:
+  image: postgres
+  container_name: tasklist
+  environment:
+    - POSTGRES_PASSWORD=pg1234
+    - POSTGRES_USER=postgres
+    - POSTGRES_DB=tasklist
+  ports:
+    - 5432:5432
