@@ -2,17 +2,17 @@ package com.anderson.tasklist.external.api;
 
 import com.anderson.tasklist.core.user.dtos.LoginDto;
 import com.anderson.tasklist.core.user.dtos.UserDto;
+import com.anderson.tasklist.core.user.dtos.UserResponseDto;
+import com.anderson.tasklist.core.user.model.User;
 import com.anderson.tasklist.core.user.services.UserService;
-import com.anderson.tasklist.core.user.exceptions.InvalidDataException;
+import com.anderson.tasklist.core.shared.exceptions.InvalidDataException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/api/v1/users")
@@ -44,5 +44,13 @@ public class UserController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/find/email/{email}")
+    public ResponseEntity<UserResponseDto> findByEmail(@PathVariable String email) {
+        User user = this.service.findByEmail(email);
+        UserResponseDto userDto = new UserResponseDto(user.getName(), user.getEmail());
+
+        return ResponseEntity.status(HttpStatus.OK).body(userDto);
     }
 }

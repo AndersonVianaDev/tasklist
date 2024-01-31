@@ -1,5 +1,7 @@
 package com.anderson.tasklist.core.user.services.impl;
 
+import com.anderson.tasklist.core.shared.exceptions.InvalidDataException;
+import com.anderson.tasklist.core.shared.exceptions.NotFoundException;
 import com.anderson.tasklist.core.user.dtos.UserDto;
 import com.anderson.tasklist.core.user.model.User;
 import com.anderson.tasklist.core.user.repository.UserRepository;
@@ -25,5 +27,21 @@ public class UserServiceImpl implements UserService {
 
         this.repository.create(user);
     }
+
+    @Override
+    public User findByEmail(String email) {
+        if(email == null) {
+            throw new InvalidDataException("Required email");
+        }
+
+        User user = this.repository.findByEmail(email);
+
+        if(user == null) {
+            throw new NotFoundException("User with email "+ email +" not found !");
+        }
+
+        return user;
+    }
+
 
 }
