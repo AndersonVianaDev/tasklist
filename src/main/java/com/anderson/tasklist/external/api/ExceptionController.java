@@ -1,7 +1,8 @@
 package com.anderson.tasklist.external.api;
 
-import com.anderson.tasklist.core.user.exceptions.InvalidDataException;
-import com.anderson.tasklist.core.user.exceptions.StandardError;
+import com.anderson.tasklist.core.shared.exceptions.InvalidDataException;
+import com.anderson.tasklist.core.shared.exceptions.NotFoundException;
+import com.anderson.tasklist.core.shared.exceptions.StandardError;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,15 @@ public class ExceptionController {
         String error = "Forbidden";
         HttpStatus status = HttpStatus.FORBIDDEN;
         StandardError err = new StandardError(LocalDateTime.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<StandardError> notFound(NotFoundException e, HttpServletRequest request) {
+        String error = "Not found";
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        StandardError err = new StandardError(LocalDateTime.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+
         return ResponseEntity.status(status).body(err);
     }
 }
