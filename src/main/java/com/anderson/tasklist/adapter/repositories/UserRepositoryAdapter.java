@@ -7,6 +7,7 @@ import com.anderson.tasklist.core.user.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class UserRepositoryAdapter implements UserRepository {
@@ -22,6 +23,13 @@ public class UserRepositoryAdapter implements UserRepository {
         UserEntityAdapter userEntityAdapter = new UserEntityAdapter(user);
 
         this.repository.save(userEntityAdapter);
+    }
+
+    @Override
+    public User findById(UUID id) {
+        UserEntityAdapter userEntityAdapter = this.repository.findById(id).orElseThrow(() -> new NotFoundException("User with id "+ id +" not found !"));
+
+        return userEntityAdapter.toUser();
     }
 
     @Override
