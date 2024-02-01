@@ -4,13 +4,13 @@ import com.anderson.tasklist.core.shared.exceptions.InvalidDataException;
 import com.anderson.tasklist.core.shared.exceptions.NotFoundException;
 import com.anderson.tasklist.core.user.dtos.LoginDto;
 import com.anderson.tasklist.core.user.dtos.LoginResponseDto;
+import com.anderson.tasklist.core.user.dtos.UpdateDto;
 import com.anderson.tasklist.core.user.dtos.UserDto;
 import com.anderson.tasklist.core.user.model.User;
 import com.anderson.tasklist.core.user.repository.UserRepository;
 import com.anderson.tasklist.core.user.services.PasswordCryptography;
 import com.anderson.tasklist.core.user.services.TokenGenerator;
 import com.anderson.tasklist.core.user.services.UserService;
-import com.anderson.tasklist.external.auth.TokenService;
 
 import java.util.UUID;
 
@@ -78,5 +78,24 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public User update(UUID id, UpdateDto updateDto) {
+        User user = this.findById(id);
 
+        if(!this.passwordCryptography.toCompare(user.getPassword(), updateDto.oldPassword())) {
+            throw new InvalidDataException("invalid password !");
+        }
+
+        String password = updateDto.newPassword();
+
+        if(user == null) {
+            throw new NotFoundException("User with id "+ id +" not found !");
+        }
+
+        password = this.passwordCryptography.encode(password);
+
+        user.setPassword(password);
+
+        return this.repository.save(user);
+    }
 }

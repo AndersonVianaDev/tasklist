@@ -1,10 +1,7 @@
 package com.anderson.tasklist.external.api;
 
 import com.anderson.tasklist.adapter.entities.UserEntityAdapter;
-import com.anderson.tasklist.core.user.dtos.LoginDto;
-import com.anderson.tasklist.core.user.dtos.LoginResponseDto;
-import com.anderson.tasklist.core.user.dtos.UserDto;
-import com.anderson.tasklist.core.user.dtos.UserResponseDto;
+import com.anderson.tasklist.core.user.dtos.*;
 import com.anderson.tasklist.core.user.model.User;
 import com.anderson.tasklist.core.user.services.TokenGenerator;
 import com.anderson.tasklist.core.user.services.UserService;
@@ -76,5 +73,14 @@ public class UserController {
         UserResponseDto userDto = new UserResponseDto(user.getName(), user.getEmail());
 
         return ResponseEntity.status(HttpStatus.OK).body(userDto);
+    }
+
+    @PatchMapping("/update/id/{id}")
+    public ResponseEntity update(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id, @RequestBody UpdateDto updateDto) {
+        User user = this.service.update(id, updateDto);
+
+        this.tokenService.verifyToken(token, user.getEmail());
+
+        return ResponseEntity.status(HttpStatus.OK).body("Updated password");
     }
 }

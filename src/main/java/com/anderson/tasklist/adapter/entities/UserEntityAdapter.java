@@ -34,6 +34,10 @@ public class UserEntityAdapter implements UserDetails {
         return new User(this.id, this.name, this.email, this.password);
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));

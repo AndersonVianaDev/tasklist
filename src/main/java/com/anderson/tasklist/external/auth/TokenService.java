@@ -40,14 +40,13 @@ public class TokenService implements TokenGenerator {
     public String validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            DecodedJWT decodedJWT = JWT.require(algorithm)
+            return JWT.require(algorithm)
                     .withIssuer("auth-api")
                     .build()
-                    .verify(token);
-
-            return decodedJWT.getSubject();
+                    .verify(token)
+                    .getSubject();
         } catch (JWTVerificationException e) {
-            throw new InvalidDataException("Invalid token !");
+            return "";
         }
     }
 

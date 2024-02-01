@@ -38,4 +38,15 @@ public class UserRepositoryAdapter implements UserRepository {
 
         return userEntity.toUser();
     }
+
+    @Override
+    public User save(User user) {
+        String email = user.getEmail();
+
+        UserEntityAdapter userEntityAdapter = this.repository.findUserByEmail(user.getEmail()).orElseThrow(() -> new NotFoundException("User with email "+ email +" not found !"));
+
+        userEntityAdapter.setPassword(user.getPassword());
+
+        return this.repository.save(userEntityAdapter).toUser();
+    }
 }

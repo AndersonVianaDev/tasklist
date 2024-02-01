@@ -10,4 +10,6 @@ public interface UserRepository {
     User findById(UUID id);
 
     User findByEmail(String email);
+
+    User save(User user);
 }
