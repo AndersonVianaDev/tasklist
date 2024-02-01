@@ -31,7 +31,7 @@ public class UserEntityAdapter implements UserDetails {
     }
 
     public User toUser() {
-        return new User(this.name, this.email, this.password);
+        return new User(this.id, this.name, this.email, this.password);
     }
 
     @Override
