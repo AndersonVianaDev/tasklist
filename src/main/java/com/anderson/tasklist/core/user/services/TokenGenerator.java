@@ -7,4 +7,6 @@ public interface TokenGenerator {
     String generateToken(User user);
 
     String validateToken(String token);
+
+    void verifyToken(String token, String email);
 }

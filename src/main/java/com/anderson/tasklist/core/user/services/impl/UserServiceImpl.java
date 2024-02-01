@@ -60,10 +60,6 @@ public class UserServiceImpl implements UserService {
 
         User user = this.repository.findById(id);
 
-        if(user == null) {
-            throw new NotFoundException("User with id "+ id +" not found !");
-        }
-
         return user;
     }
 

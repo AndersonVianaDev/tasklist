@@ -26,10 +26,12 @@ public class UserController {
 
     private final UserService service;
     private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
-    public UserController(UserService service, AuthenticationManager authenticationManager) {
+    public UserController(UserService service, AuthenticationManager authenticationManager, TokenService tokenService) {
         this.service = service;
         this.authenticationManager = authenticationManager;
+        this.tokenService = tokenService;
     }
 
     @PostMapping("/register")
@@ -55,16 +57,22 @@ public class UserController {
     }
 
     @GetMapping("/find/id/{id}")
-    public ResponseEntity<UserResponseDto> findById(@PathVariable UUID id) {
+    public ResponseEntity<UserResponseDto> findById(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id) {
         User user = this.service.findById(id);
+
+        this.tokenService.verifyToken(token, user.getEmail());
+
         UserResponseDto userDto = new UserResponseDto(user.getName(), user.getEmail());
 
         return ResponseEntity.status(HttpStatus.OK).body(userDto);
     }
 
     @GetMapping("/find/email/{email}")
-    public ResponseEntity<UserResponseDto> findByEmail(@PathVariable String email) {
+    public ResponseEntity<UserResponseDto> findByEmail(@RequestHeader(name = "Authorization") String token, @PathVariable String email) {
         User user = this.service.findByEmail(email);
+
+        this.tokenService.verifyToken(token, email);
+
         UserResponseDto userDto = new UserResponseDto(user.getName(), user.getEmail());
 
         return ResponseEntity.status(HttpStatus.OK).body(userDto);
