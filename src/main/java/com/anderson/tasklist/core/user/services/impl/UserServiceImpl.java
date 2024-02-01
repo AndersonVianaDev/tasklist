@@ -28,6 +28,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void create(UserDto userDto) {
+        if(this.repository.findByEmail(userDto.email()) != null) {
+            throw new InvalidDataException("Email already registered");
+        }
+
         User user = new User(userDto);
         String password = user.getPassword();
         password = this.passwordCryptography.encode(password);
@@ -59,6 +63,10 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = this.repository.findById(id);
+
+        if(user == null) {
+            throw new NotFoundException("User with id "+ id +" not found !");
+        }
 
         return user;
     }
@@ -97,5 +105,10 @@ public class UserServiceImpl implements UserService {
         user.setPassword(password);
 
         return this.repository.save(user);
+    }
+
+    @Override
+    public void delete(User user) {
+        this.repository.delete(user);
     }
 }

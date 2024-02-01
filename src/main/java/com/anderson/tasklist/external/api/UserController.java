@@ -1,9 +1,7 @@
 package com.anderson.tasklist.external.api;
 
-import com.anderson.tasklist.adapter.entities.UserEntityAdapter;
 import com.anderson.tasklist.core.user.dtos.*;
 import com.anderson.tasklist.core.user.model.User;
-import com.anderson.tasklist.core.user.services.TokenGenerator;
 import com.anderson.tasklist.core.user.services.UserService;
 import com.anderson.tasklist.core.shared.exceptions.InvalidDataException;
 import com.anderson.tasklist.external.auth.TokenService;
@@ -82,5 +80,16 @@ public class UserController {
         this.tokenService.verifyToken(token, user.getEmail());
 
         return ResponseEntity.status(HttpStatus.OK).body("Updated password");
+    }
+
+    @DeleteMapping("/delete/id/{id}")
+    public ResponseEntity delete(@RequestHeader(name =  "Authorization") String token, @PathVariable UUID id) {
+        User user = this.service.findById(id);
+
+        this.tokenService.verifyToken(token, user.getEmail());
+
+        this.service.delete(user);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Successfully deleted");
     }
 }

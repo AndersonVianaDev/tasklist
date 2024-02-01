@@ -49,4 +49,13 @@ public class UserRepositoryAdapter implements UserRepository {
 
         return this.repository.save(userEntityAdapter).toUser();
     }
+
+    @Override
+    public void delete(User user) {
+        UUID id = user.getId();
+
+        UserEntityAdapter userEntityAdapter = this.repository.findById(id).orElseThrow(() -> new NotFoundException("User with id "+ id +" not found !"));
+
+        this.repository.delete(userEntityAdapter);
+    }
 }
