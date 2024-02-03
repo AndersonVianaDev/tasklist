@@ -41,6 +41,8 @@ public class UserController {
     public ResponseEntity<UserResponseDto> findById(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id) {
         User user = this.service.findById(id);
 
+        token = token.replace("Bearer ", "");
+
         this.tokenService.verifyToken(token, user.getEmail());
 
         UserResponseDto userDto = new UserResponseDto(user.getName(), user.getEmail());
@@ -51,6 +53,8 @@ public class UserController {
     @GetMapping("/find/email/{email}")
     public ResponseEntity<UserResponseDto> findByEmail(@RequestHeader(name = "Authorization") String token, @PathVariable String email) {
         User user = this.service.findByEmail(email);
+
+        token = token.replace("Bearer ", "");
 
         this.tokenService.verifyToken(token, email);
 
@@ -63,6 +67,8 @@ public class UserController {
     public ResponseEntity update(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id, @RequestBody UpdateDto updateDto) {
         User user = this.service.update(id, updateDto);
 
+        token = token.replace("Bearer ", "");
+
         this.tokenService.verifyToken(token, user.getEmail());
 
         return ResponseEntity.status(HttpStatus.OK).body("Updated password");
@@ -71,6 +77,8 @@ public class UserController {
     @DeleteMapping("/delete/id/{id}")
     public ResponseEntity delete(@RequestHeader(name =  "Authorization") String token, @PathVariable UUID id) {
         User user = this.service.findById(id);
+
+        token = token.replace("Bearer ", "");
 
         this.tokenService.verifyToken(token, user.getEmail());
 

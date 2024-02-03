@@ -52,7 +52,7 @@ public class TokenService implements TokenGenerator {
     public void verifyToken(String token, String email) {
         String emailToken = validateToken(token);
 
-        if(emailToken.equals(email)) {
+        if(!emailToken.equals(email)) {
             throw new InvalidDataException("Not authorized");
         }
     }
