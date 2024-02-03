@@ -1,4 +1,4 @@
-package com.anderson.tasklist.adapter.repositories;
+package com.anderson.tasklist.adapter.repositories.user;
 
 import com.anderson.tasklist.adapter.entities.UserEntityAdapter;
 import com.anderson.tasklist.core.shared.exceptions.NotFoundException;

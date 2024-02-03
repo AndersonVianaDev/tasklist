@@ -1,4 +1,4 @@
-package com.anderson.tasklist.adapter.repositories;
+package com.anderson.tasklist.adapter.repositories.user;
 
 import com.anderson.tasklist.adapter.entities.UserEntityAdapter;
 import org.springframework.data.jpa.repository.JpaRepository;

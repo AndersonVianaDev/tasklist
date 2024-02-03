@@ -1,6 +1,6 @@
 package com.anderson.tasklist.adapter.services;
 
-import com.anderson.tasklist.adapter.repositories.AuthorizationRepository;
+import com.anderson.tasklist.adapter.repositories.user.AuthorizationRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
