@@ -1,6 +1,7 @@
 package com.anderson.tasklist.external.api;
 
 import com.anderson.tasklist.core.task.dtos.TaskDto;
+import com.anderson.tasklist.core.task.model.Task;
 import com.anderson.tasklist.core.task.services.TaskService;
 import com.anderson.tasklist.core.user.model.User;
 import com.anderson.tasklist.core.user.services.UserService;
@@ -31,10 +32,27 @@ public class TaskController {
     public ResponseEntity create(@RequestHeader(name = "Authorization") String token, @PathVariable UUID idUser, @RequestBody TaskDto taskDto) {
         User user = this.userService.findById(idUser);
 
+        token = token.replace("Bearer ", "");
+
         this.tokenService.verifyToken(token, user.getEmail());
 
         this.service.create(idUser, taskDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("task created");
+    }
+
+    @GetMapping("/find/id/{id}")
+    public ResponseEntity findById(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id) {
+        token = token.replace("Bearer ", "");
+
+        String email = this.tokenService.validateToken(token);
+
+        User user = this.userService.findByEmail(email);
+
+        Task task = this.service.findById(user.getId(), id);
+
+        TaskDto taskDto = this.service.toTaskDto(task);
+
+        return ResponseEntity.status(HttpStatus.OK).body(taskDto);
     }
 }

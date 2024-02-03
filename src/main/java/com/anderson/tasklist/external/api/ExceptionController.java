@@ -1,9 +1,6 @@
 package com.anderson.tasklist.external.api;
 
-import com.anderson.tasklist.core.shared.exceptions.InvalidDataException;
-import com.anderson.tasklist.core.shared.exceptions.InvalidDateException;
-import com.anderson.tasklist.core.shared.exceptions.NotFoundException;
-import com.anderson.tasklist.core.shared.exceptions.StandardError;
+import com.anderson.tasklist.core.shared.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +32,15 @@ public class ExceptionController {
     @ExceptionHandler(InvalidDateException.class)
     public ResponseEntity<StandardError> invalidDate(InvalidDateException e, HttpServletRequest request) {
         String error = "Invalid date";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(LocalDateTime.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(InvalidUserException.class)
+    public ResponseEntity<StandardError> invalidUser(InvalidUserException e, HttpServletRequest request) {
+        String error = "Invalid user";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         StandardError err = new StandardError(LocalDateTime.now(), status.value(), error, e.getMessage(), request.getRequestURI());
 

@@ -2,6 +2,8 @@ package com.anderson.tasklist.core.task.services.impl;
 
 import com.anderson.tasklist.core.shared.exceptions.InvalidDataException;
 import com.anderson.tasklist.core.shared.exceptions.InvalidDateException;
+import com.anderson.tasklist.core.shared.exceptions.InvalidUserException;
+import com.anderson.tasklist.core.shared.exceptions.NotFoundException;
 import com.anderson.tasklist.core.task.dtos.TaskDto;
 import com.anderson.tasklist.core.task.model.Task;
 import com.anderson.tasklist.core.task.repository.TaskRepository;
@@ -31,5 +33,23 @@ public class TaskServiceImpl implements TaskService {
         Task task = new Task(idUser, taskDto);
 
         this.repository.create(task);
+    }
+
+    @Override
+    public Task findById(UUID idUser, UUID id) {
+        if(id == null) throw new InvalidDataException("id required !");
+
+        Task task = this.repository.findById(id);
+
+        if(task == null) throw new NotFoundException("Task with id "+ id +" not found !");
+
+        if(task.getIdUser() == idUser) throw new InvalidUserException("the task does not belong to the user !");
+
+        return task;
+    }
+
+    @Override
+    public TaskDto toTaskDto(Task task) {
+        return new TaskDto(task.getName(), task.getConcluded(), task.getExpirationDate());
     }
 }

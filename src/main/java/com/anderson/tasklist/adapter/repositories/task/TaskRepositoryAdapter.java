@@ -5,6 +5,9 @@ import com.anderson.tasklist.core.task.model.Task;
 import com.anderson.tasklist.core.task.repository.TaskRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Component
 public class TaskRepositoryAdapter implements TaskRepository {
 
@@ -19,5 +22,14 @@ public class TaskRepositoryAdapter implements TaskRepository {
         TaskEntityAdapter taskEntity = new TaskEntityAdapter(task);
 
         this.repository.save(taskEntity);
+    }
+
+    @Override
+    public Task findById(UUID id) {
+        Optional<TaskEntityAdapter> taskEntity = this.repository.findById(id);
+
+        if(taskEntity.isPresent()) return taskEntity.get().toTask();
+
+        return null;
     }
 }
