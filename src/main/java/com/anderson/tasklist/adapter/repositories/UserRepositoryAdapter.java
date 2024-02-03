@@ -27,16 +27,20 @@ public class UserRepositoryAdapter implements UserRepository {
 
     @Override
     public User findById(UUID id) {
-        UserEntityAdapter userEntityAdapter = this.repository.findById(id).orElseThrow(() -> new NotFoundException("User with id "+ id +" not found !"));
+        Optional<UserEntityAdapter> userEntityAdapter = this.repository.findById(id);
 
-        return userEntityAdapter.toUser();
+        if(userEntityAdapter.isPresent()) return userEntityAdapter.get().toUser();
+
+        return null;
     }
 
     @Override
     public User findByEmail(String email) {
-        UserEntityAdapter userEntity = this.repository.findUserByEmail(email).orElseThrow(() -> new NotFoundException("User with email "+ email +" not found !"));
+        Optional<UserEntityAdapter> userEntity = this.repository.findUserByEmail(email);
 
-        return userEntity.toUser();
+        if(userEntity.isPresent()) return userEntity.get().toUser();
+
+        return null;
     }
 
     @Override

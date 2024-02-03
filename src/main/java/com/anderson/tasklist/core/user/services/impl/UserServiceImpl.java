@@ -58,30 +58,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(UUID id) {
-        if(id == null) {
-            throw new InvalidDataException("Required id");
-        }
+        if(id == null) throw new InvalidDataException("Required id");
 
         User user = this.repository.findById(id);
 
-        if(user == null) {
-            throw new NotFoundException("User with id "+ id +" not found !");
-        }
+        if(user == null) throw new NotFoundException("User with id "+ id +" not found !");
 
         return user;
     }
 
     @Override
     public User findByEmail(String email) {
-        if(email == null) {
-            throw new InvalidDataException("Required email");
-        }
+        if(email == null) throw new InvalidDataException("Required email");
 
         User user = this.repository.findByEmail(email);
 
-        if(user == null) {
-            throw new NotFoundException("User with email "+ email +" not found !");
-        }
+        if(user == null) throw new NotFoundException("User with email "+ email +" not found !");
 
         return user;
     }
@@ -90,15 +82,13 @@ public class UserServiceImpl implements UserService {
     public User update(UUID id, UpdateDto updateDto) {
         User user = this.findById(id);
 
+        if(user == null) throw new NotFoundException("User with id "+ id +" not found !");
+
         if(!this.passwordCryptography.toCompare(user.getPassword(), updateDto.oldPassword())) {
             throw new InvalidDataException("invalid password !");
         }
 
         String password = updateDto.newPassword();
-
-        if(user == null) {
-            throw new NotFoundException("User with id "+ id +" not found !");
-        }
 
         password = this.passwordCryptography.encode(password);
 

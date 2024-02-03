@@ -2,6 +2,7 @@ package com.anderson.tasklist.core.user.repository;
 
 import com.anderson.tasklist.core.user.model.User;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository {
