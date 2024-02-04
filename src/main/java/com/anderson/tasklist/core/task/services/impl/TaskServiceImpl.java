@@ -77,6 +77,15 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<Task> findAllActive(UUID idUser) {
+        if(idUser == null) throw new InvalidDataException("Required id !");
+
+        List<Task> tasks = this.repository.findAllActive(idUser);
+
+        return tasks;
+    }
+
+    @Override
     public TaskDto toTaskDto(Task task) {
         return new TaskDto(task.getName(), task.getConcluded(), task.getExpirationDate());
     }

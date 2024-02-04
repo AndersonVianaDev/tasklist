@@ -16,4 +16,6 @@ public interface TaskRepository {
     Task update(Task task);
 
     List<Task> findAll(UUID idUser);
+
+    List<Task> findAllActive(UUID idUser);
 }

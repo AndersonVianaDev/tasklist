@@ -91,4 +91,17 @@ public class TaskController {
 
         return ResponseEntity.status(HttpStatus.OK).body(taskDtos);
     }
+
+    @GetMapping("/findAllActive/id/{idUser}")
+    public ResponseEntity<List<TaskDto>> findAllActive(@RequestHeader(name = "Authorization") String token, @PathVariable UUID idUser) {
+        User user = this.userService.findById(idUser);
+
+        this.tokenService.verifyToken(token, user.getEmail());
+
+        List<Task> tasks = this.service.findAllActive(idUser);
+
+        List<TaskDto> taskDtos = this.service.toTaskDtos(tasks);
+
+        return ResponseEntity.status(HttpStatus.OK).body(taskDtos);
+    }
 }

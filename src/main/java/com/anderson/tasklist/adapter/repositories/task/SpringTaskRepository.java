@@ -15,4 +15,7 @@ public interface SpringTaskRepository extends JpaRepository<TaskEntityAdapter, U
     @Query("SELECT t FROM TaskEntityAdapter t where t.idUser = :idUser")
     List<TaskEntityAdapter> findAll(@Param("idUser") UUID idUser);
 
+    @Query("SELECT t FROM TaskEntityAdapter t WHERE t.idUser = :idUser AND t.concluded = false")
+    List<TaskEntityAdapter> findAllActive(@Param("idUser") UUID idUser);
+
 }

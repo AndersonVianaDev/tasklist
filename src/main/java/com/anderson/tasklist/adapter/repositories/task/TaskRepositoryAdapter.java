@@ -67,4 +67,15 @@ public class TaskRepositoryAdapter implements TaskRepository {
         return null;
     }
 
+    @Override
+    public List<Task> findAllActive(UUID idUser) {
+        List<TaskEntityAdapter> taskEntityList = this.repository.findAllActive(idUser);
+
+        if(!taskEntityList.isEmpty()) {
+            List<Task> tasks = taskEntityList.stream().map(t -> t.toTask()).toList();
+            return tasks;
+        }
+
+        return null;
+    }
 }

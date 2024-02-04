@@ -19,6 +19,8 @@ public interface TaskService {
 
     List<Task> findAll(UUID idUser);
 
+    List<Task> findAllActive(UUID idUser);
+
     TaskDto toTaskDto(Task task);
 
     List<TaskDto> toTaskDtos(List<Task> tasks);
