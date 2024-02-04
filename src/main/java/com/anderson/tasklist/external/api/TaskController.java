@@ -32,8 +32,6 @@ public class TaskController {
     public ResponseEntity create(@RequestHeader(name = "Authorization") String token, @PathVariable UUID idUser, @RequestBody TaskDto taskDto) {
         User user = this.userService.findById(idUser);
 
-        token = token.replace("Bearer ", "");
-
         this.tokenService.verifyToken(token, user.getEmail());
 
         this.service.create(idUser, taskDto);
@@ -43,8 +41,6 @@ public class TaskController {
 
     @GetMapping("/find/id/{id}")
     public ResponseEntity findById(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id) {
-        token = token.replace("Bearer ", "");
-
         String email = this.tokenService.validateToken(token);
 
         User user = this.userService.findByEmail(email);

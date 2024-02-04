@@ -46,4 +46,13 @@ public class ExceptionController {
 
         return ResponseEntity.status(status).body(err);
     }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<StandardError> invalidToken(InvalidTokenException e, HttpServletRequest request) {
+        String error = "Invalid token";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(LocalDateTime.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+
+        return ResponseEntity.status(status).body(err);
+    }
 }

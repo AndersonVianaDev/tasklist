@@ -1,6 +1,7 @@
 package com.anderson.tasklist.external.auth;
 
 import com.anderson.tasklist.core.shared.exceptions.InvalidDataException;
+import com.anderson.tasklist.core.shared.exceptions.InvalidTokenException;
 import com.anderson.tasklist.core.shared.exceptions.TokenGeneratorException;
 import com.anderson.tasklist.core.user.model.User;
 import com.anderson.tasklist.core.user.services.TokenGenerator;
@@ -38,6 +39,7 @@ public class TokenService implements TokenGenerator {
     @Override
     public String validateToken(String token) {
         try {
+            token = token.replace("Bearer ", "");
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
                     .withIssuer("auth-api")

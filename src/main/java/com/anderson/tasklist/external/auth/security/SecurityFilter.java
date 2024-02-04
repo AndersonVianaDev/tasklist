@@ -1,6 +1,7 @@
 package com.anderson.tasklist.external.auth.security;
 
 import com.anderson.tasklist.adapter.services.AuthorizationService;
+import com.anderson.tasklist.core.shared.exceptions.InvalidTokenException;
 import com.anderson.tasklist.external.auth.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -30,6 +31,8 @@ public class SecurityFilter extends OncePerRequestFilter {
         String token = this.recoverToken(request);
         if(token != null) {
             String email = this.tokenService.validateToken(token);
+            if(email.equals("")) throw new InvalidTokenException("invalid token !");
+
             UserDetails user = this.authorizationService.loadUserByUsername(email);
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
