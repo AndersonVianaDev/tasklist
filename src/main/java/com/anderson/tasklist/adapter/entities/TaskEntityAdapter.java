@@ -31,4 +31,8 @@ public class TaskEntityAdapter {
     public Task toTask() {
         return new Task(id, idUser, name, concluded, expirationDate);
     }
+
+    public void setConcluded(Boolean concluded) {
+        this.concluded = concluded;
+    }
 }

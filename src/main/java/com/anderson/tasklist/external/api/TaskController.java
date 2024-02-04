@@ -1,11 +1,13 @@
 package com.anderson.tasklist.external.api;
 
 import com.anderson.tasklist.core.task.dtos.TaskDto;
+import com.anderson.tasklist.core.task.dtos.UpdateTaskDto;
 import com.anderson.tasklist.core.task.model.Task;
 import com.anderson.tasklist.core.task.services.TaskService;
 import com.anderson.tasklist.core.user.model.User;
 import com.anderson.tasklist.core.user.services.UserService;
 import com.anderson.tasklist.external.auth.TokenService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,5 +63,18 @@ public class TaskController {
         this.service.delete(user.getId(), id);
 
         return ResponseEntity.status(HttpStatus.OK).body("Successfully deleted");
+    }
+
+    @PatchMapping("/update/id/{id}")
+    public ResponseEntity update(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id, @RequestBody UpdateTaskDto updateTaskDto) {
+        String email = this.tokenService.validateToken(token);
+
+        User user = this.userService.findByEmail(email);
+
+        Task task = this.service.update(user.getId(), id, updateTaskDto);
+
+        TaskDto taskDto = new TaskDto(task.getName(), task.getConcluded(), task.getExpirationDate());
+
+        return ResponseEntity.status(HttpStatus.OK).body(taskDto);
     }
 }

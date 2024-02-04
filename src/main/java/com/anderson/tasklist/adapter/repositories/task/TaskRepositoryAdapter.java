@@ -43,4 +43,16 @@ public class TaskRepositoryAdapter implements TaskRepository {
         this.repository.delete(taskEntity);
     }
 
+    @Override
+    public Task update(Task task) {
+        UUID id = task.getId();
+
+        TaskEntityAdapter taskEntity = this.repository.findById(id).orElseThrow(() -> new NotFoundException("Task with id "+ id +" not found !"));
+
+        taskEntity.setConcluded(task.getConcluded());
+
+        return taskEntity.toTask();
+    }
+
+
 }

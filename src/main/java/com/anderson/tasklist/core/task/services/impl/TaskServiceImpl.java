@@ -5,6 +5,7 @@ import com.anderson.tasklist.core.shared.exceptions.InvalidDateException;
 import com.anderson.tasklist.core.shared.exceptions.InvalidUserException;
 import com.anderson.tasklist.core.shared.exceptions.NotFoundException;
 import com.anderson.tasklist.core.task.dtos.TaskDto;
+import com.anderson.tasklist.core.task.dtos.UpdateTaskDto;
 import com.anderson.tasklist.core.task.model.Task;
 import com.anderson.tasklist.core.task.repository.TaskRepository;
 import com.anderson.tasklist.core.task.services.TaskService;
@@ -37,7 +38,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task findById(UUID idUser, UUID id) {
-        if(id == null) throw new InvalidDataException("id required !");
+        if(id == null) throw new InvalidDataException("Required id !");
 
         Task task = this.repository.findById(id);
 
@@ -53,6 +54,16 @@ public class TaskServiceImpl implements TaskService {
         Task task = findById(idUser, id);
 
         this.repository.delete(task);
+    }
+
+    @Override
+    public Task update(UUID idUser, UUID id, UpdateTaskDto updateTaskDto) {
+        if(idUser == null || id == null) throw new InvalidDataException("Required data !");
+        Task task = findById(idUser, id);
+
+        task.setConcluded(updateTaskDto.concluded());
+
+        return this.repository.update(task);
     }
 
     @Override
