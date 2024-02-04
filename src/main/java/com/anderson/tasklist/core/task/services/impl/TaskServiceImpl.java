@@ -11,6 +11,7 @@ import com.anderson.tasklist.core.task.repository.TaskRepository;
 import com.anderson.tasklist.core.task.services.TaskService;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public class TaskServiceImpl implements TaskService {
@@ -67,7 +68,23 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<Task> findAll(UUID idUser) {
+        if(idUser == null) throw new InvalidDataException("Required id !");
+
+        List<Task> tasks = this.repository.findAll(idUser);
+
+        return tasks;
+    }
+
+    @Override
     public TaskDto toTaskDto(Task task) {
         return new TaskDto(task.getName(), task.getConcluded(), task.getExpirationDate());
+    }
+
+    @Override
+    public List<TaskDto> toTaskDtos(List<Task> tasks) {
+        List<TaskDto> taskDtos = tasks.stream().map(t -> toTaskDto(t)).toList();
+
+        return taskDtos;
     }
 }

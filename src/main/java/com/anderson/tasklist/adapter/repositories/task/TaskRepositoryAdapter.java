@@ -6,6 +6,7 @@ import com.anderson.tasklist.core.task.model.Task;
 import com.anderson.tasklist.core.task.repository.TaskRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -54,5 +55,16 @@ public class TaskRepositoryAdapter implements TaskRepository {
         return taskEntity.toTask();
     }
 
+    @Override
+    public List<Task> findAll(UUID idUser) {
+        List<TaskEntityAdapter> taskEntityList = this.repository.findAll(idUser);
+
+        if(!taskEntityList.isEmpty()) {
+            List<Task> tasks = taskEntityList.stream().map(t -> t.toTask()).toList();
+            return tasks;
+        }
+
+        return null;
+    }
 
 }

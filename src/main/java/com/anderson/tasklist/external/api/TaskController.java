@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -73,8 +74,21 @@ public class TaskController {
 
         Task task = this.service.update(user.getId(), id, updateTaskDto);
 
-        TaskDto taskDto = new TaskDto(task.getName(), task.getConcluded(), task.getExpirationDate());
+        TaskDto taskDto = this.service.toTaskDto(task);
 
         return ResponseEntity.status(HttpStatus.OK).body(taskDto);
+    }
+
+    @GetMapping("/findAll/id/{idUser}")
+    public ResponseEntity findAll(@RequestHeader(name = "Authorization") String token, @PathVariable UUID idUser) {
+        User user = this.userService.findById(idUser);
+
+        this.tokenService.verifyToken(token, user.getEmail());
+
+        List<Task> tasks = this.service.findAll(idUser);
+
+        List<TaskDto> taskDtos = this.service.toTaskDtos(tasks);
+
+        return ResponseEntity.status(HttpStatus.OK).body(taskDtos);
     }
 }
