@@ -11,5 +11,7 @@ public interface TaskService {
 
     Task findById(UUID idUser, UUID id);
 
+    void delete(UUID idUser, UUID id);
+
     TaskDto toTaskDto(Task task);
 }

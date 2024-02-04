@@ -9,4 +9,6 @@ public interface TaskRepository {
     void create(Task task);
 
     Task findById(UUID id);
+
+    void delete(Task task);
 }

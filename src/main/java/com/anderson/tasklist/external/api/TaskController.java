@@ -51,4 +51,15 @@ public class TaskController {
 
         return ResponseEntity.status(HttpStatus.OK).body(taskDto);
     }
+
+    @DeleteMapping("/delete/id/{id}")
+    public ResponseEntity delete(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id) {
+        String email = this.tokenService.validateToken(token);
+
+        User user = this.userService.findByEmail(email);
+
+        this.service.delete(user.getId(), id);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Successfully deleted");
+    }
 }

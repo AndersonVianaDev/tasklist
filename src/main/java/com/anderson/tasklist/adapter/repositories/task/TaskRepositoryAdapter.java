@@ -1,6 +1,7 @@
 package com.anderson.tasklist.adapter.repositories.task;
 
 import com.anderson.tasklist.adapter.entities.TaskEntityAdapter;
+import com.anderson.tasklist.core.shared.exceptions.NotFoundException;
 import com.anderson.tasklist.core.task.model.Task;
 import com.anderson.tasklist.core.task.repository.TaskRepository;
 import org.springframework.stereotype.Component;
@@ -32,4 +33,14 @@ public class TaskRepositoryAdapter implements TaskRepository {
 
         return null;
     }
+
+    @Override
+    public void delete(Task task) {
+        UUID id = task.getId();
+
+        TaskEntityAdapter taskEntity = this.repository.findById(id).orElseThrow(() -> new NotFoundException("Task with id "+ id +" not found !"));
+
+        this.repository.delete(taskEntity);
+    }
+
 }

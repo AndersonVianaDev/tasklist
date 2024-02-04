@@ -49,6 +49,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public void delete(UUID idUser, UUID id) {
+        Task task = findById(idUser, id);
+
+        this.repository.delete(task);
+    }
+
+    @Override
     public TaskDto toTaskDto(Task task) {
         return new TaskDto(task.getName(), task.getConcluded(), task.getExpirationDate());
     }
