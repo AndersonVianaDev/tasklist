@@ -4,8 +4,6 @@ import com.anderson.tasklist.core.task.dtos.TaskDto;
 import com.anderson.tasklist.core.task.dtos.UpdateTaskDto;
 import com.anderson.tasklist.core.task.model.Task;
 import com.anderson.tasklist.core.task.services.TaskService;
-import com.anderson.tasklist.core.user.model.User;
-import com.anderson.tasklist.core.user.services.UserService;
 import com.anderson.tasklist.external.auth.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,12 +21,10 @@ import java.util.UUID;
 public class TaskController {
 
     private final TaskService service;
-    private final UserService userService;
     private final TokenService tokenService;
 
-    public TaskController(TaskService service, UserService userService, TokenService tokenService) {
+    public TaskController(TaskService service, TokenService tokenService) {
         this.service = service;
-        this.userService = userService;
         this.tokenService = tokenService;
     }
 
