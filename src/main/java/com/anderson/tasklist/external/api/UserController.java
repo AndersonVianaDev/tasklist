@@ -4,6 +4,8 @@ import com.anderson.tasklist.core.user.dtos.*;
 import com.anderson.tasklist.core.user.model.User;
 import com.anderson.tasklist.core.user.services.UserService;
 import com.anderson.tasklist.external.auth.TokenService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/api/v1/users")
+@Tag(name = "tasklist-api")
 public class UserController {
 
     private final UserService service;
@@ -24,6 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
+    @Operation(summary = "register user", method = "POST")
     public ResponseEntity register(@RequestBody UserDto userDto) {
         this.service.create(userDto);
 
@@ -31,6 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
+    @Operation(summary = "login user", method = "POST")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginDto loginDto) {
         LoginResponseDto loginResponse = this.service.login(loginDto);
 
@@ -38,6 +43,7 @@ public class UserController {
     }
 
     @GetMapping("/find/id/{id}")
+    @Operation(summary = "find by user id", method = "GET")
     public ResponseEntity<UserResponseDto> findById(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id) {
         User user = this.service.findById(id);
 
@@ -49,6 +55,7 @@ public class UserController {
     }
 
     @GetMapping("/find/email/{email}")
+    @Operation(summary = "find by user email", method = "GET")
     public ResponseEntity<UserResponseDto> findByEmail(@RequestHeader(name = "Authorization") String token, @PathVariable String email) {
         User user = this.service.findByEmail(email);
 
@@ -60,6 +67,7 @@ public class UserController {
     }
 
     @PatchMapping("/update/id/{id}")
+    @Operation(summary = "update password", method = "PATCH")
     public ResponseEntity update(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id, @RequestBody UpdateDto updateDto) {
         User user = this.service.update(id, updateDto);
 
@@ -69,6 +77,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/id/{id}")
+    @Operation(summary = "delete user", method = "DELETE")
     public ResponseEntity delete(@RequestHeader(name =  "Authorization") String token, @PathVariable UUID id) {
         User user = this.service.findById(id);
 

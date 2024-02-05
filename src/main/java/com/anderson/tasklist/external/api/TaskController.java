@@ -7,6 +7,8 @@ import com.anderson.tasklist.core.task.services.TaskService;
 import com.anderson.tasklist.core.user.model.User;
 import com.anderson.tasklist.core.user.services.UserService;
 import com.anderson.tasklist.external.auth.TokenService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("api/v1/tasks")
+@Tag(name = "tasklist-api")
 public class TaskController {
 
     private final TaskService service;
@@ -30,6 +33,7 @@ public class TaskController {
     }
 
     @PostMapping("/create/id/{idUser}")
+    @Operation(summary = "create task", method = "POST")
     public ResponseEntity create(@RequestHeader(name = "Authorization") String token, @PathVariable UUID idUser, @RequestBody TaskDto taskDto) {
         User user = this.userService.findById(idUser);
 
@@ -41,6 +45,7 @@ public class TaskController {
     }
 
     @GetMapping("/find/id/{id}")
+    @Operation(summary = "find by task id", method = "GET")
     public ResponseEntity findById(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id) {
         String email = this.tokenService.validateToken(token);
 
@@ -54,6 +59,7 @@ public class TaskController {
     }
 
     @DeleteMapping("/delete/id/{id}")
+    @Operation(summary = "delete task", method = "DELETE")
     public ResponseEntity delete(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id) {
         String email = this.tokenService.validateToken(token);
 
@@ -65,6 +71,7 @@ public class TaskController {
     }
 
     @PatchMapping("/update/id/{id}")
+    @Operation(summary = "update task", method = "PATCH")
     public ResponseEntity update(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id, @RequestBody UpdateTaskDto updateTaskDto) {
         String email = this.tokenService.validateToken(token);
 
@@ -78,6 +85,7 @@ public class TaskController {
     }
 
     @GetMapping("/findAll/id/{idUser}")
+    @Operation(summary = "find tasks by user id", method = "GET")
     public ResponseEntity findAll(@RequestHeader(name = "Authorization") String token, @PathVariable UUID idUser) {
         User user = this.userService.findById(idUser);
 
@@ -91,6 +99,7 @@ public class TaskController {
     }
 
     @GetMapping("/findAllActive/id/{idUser}")
+    @Operation(summary = "find active tasks by user id", method = "GET")
     public ResponseEntity<List<TaskDto>> findAllActive(@RequestHeader(name = "Authorization") String token, @PathVariable UUID idUser) {
         User user = this.userService.findById(idUser);
 
