@@ -12,10 +12,10 @@ import java.util.UUID;
 @Repository
 public interface SpringTaskRepository extends JpaRepository<TaskEntityAdapter, UUID> {
 
-    @Query("SELECT t FROM TaskEntityAdapter t where t.idUser = :idUser")
+    @Query("SELECT t FROM TaskEntityAdapter t where t.user.id = :idUser")
     List<TaskEntityAdapter> findAll(@Param("idUser") UUID idUser);
 
-    @Query("SELECT t FROM TaskEntityAdapter t WHERE t.idUser = :idUser AND t.concluded = false")
+    @Query("SELECT t FROM TaskEntityAdapter t WHERE t.user.id = :idUser AND t.concluded = false")
     List<TaskEntityAdapter> findAllActive(@Param("idUser") UUID idUser);
 
 }

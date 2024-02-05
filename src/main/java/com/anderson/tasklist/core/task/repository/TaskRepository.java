@@ -1,6 +1,7 @@
 package com.anderson.tasklist.core.task.repository;
 
 import com.anderson.tasklist.core.task.model.Task;
+import com.anderson.tasklist.core.user.model.User;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,7 +16,7 @@ public interface TaskRepository {
 
     Task update(Task task);
 
-    List<Task> findAll(UUID idUser);
+    List<Task> findAll(User user);
 
-    List<Task> findAllActive(UUID idUser);
+    List<Task> findAllActive(User user);
 }

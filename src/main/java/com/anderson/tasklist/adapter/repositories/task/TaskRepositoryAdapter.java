@@ -1,9 +1,12 @@
 package com.anderson.tasklist.adapter.repositories.task;
 
 import com.anderson.tasklist.adapter.entities.TaskEntityAdapter;
+import com.anderson.tasklist.adapter.entities.UserEntityAdapter;
+import com.anderson.tasklist.adapter.repositories.user.SpringUserRepository;
 import com.anderson.tasklist.core.shared.exceptions.NotFoundException;
 import com.anderson.tasklist.core.task.model.Task;
 import com.anderson.tasklist.core.task.repository.TaskRepository;
+import com.anderson.tasklist.core.user.model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,14 +17,20 @@ import java.util.UUID;
 public class TaskRepositoryAdapter implements TaskRepository {
 
     private final SpringTaskRepository repository;
+    private final SpringUserRepository userRepository;
 
-    public TaskRepositoryAdapter(SpringTaskRepository repository) {
+    public TaskRepositoryAdapter(SpringTaskRepository repository, SpringUserRepository userRepository) {
         this.repository = repository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public void create(Task task) {
+        UUID idUser = task.getUser().getId();
+        UserEntityAdapter userExisting = this.userRepository.findById(idUser).orElseThrow(() -> new NotFoundException("User with id "+ idUser +" not found !"));
         TaskEntityAdapter taskEntity = new TaskEntityAdapter(task);
+
+        taskEntity.setUser(userExisting);
 
         this.repository.save(taskEntity);
     }
@@ -56,8 +65,8 @@ public class TaskRepositoryAdapter implements TaskRepository {
     }
 
     @Override
-    public List<Task> findAll(UUID idUser) {
-        List<TaskEntityAdapter> taskEntityList = this.repository.findAll(idUser);
+    public List<Task> findAll(User user) {
+        List<TaskEntityAdapter> taskEntityList = this.repository.findAll(user.getId());
 
         if(!taskEntityList.isEmpty()) {
             List<Task> tasks = taskEntityList.stream().map(t -> t.toTask()).toList();
@@ -68,8 +77,8 @@ public class TaskRepositoryAdapter implements TaskRepository {
     }
 
     @Override
-    public List<Task> findAllActive(UUID idUser) {
-        List<TaskEntityAdapter> taskEntityList = this.repository.findAllActive(idUser);
+    public List<Task> findAllActive(User user) {
+        List<TaskEntityAdapter> taskEntityList = this.repository.findAllActive(user.getId());
 
         if(!taskEntityList.isEmpty()) {
             List<Task> tasks = taskEntityList.stream().map(t -> t.toTask()).toList();

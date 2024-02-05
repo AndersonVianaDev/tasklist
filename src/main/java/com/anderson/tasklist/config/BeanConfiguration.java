@@ -22,8 +22,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public TaskService taskService (TaskRepository taskRepository) {
-        return new TaskServiceImpl(taskRepository);
+    public TaskService taskService (TaskRepository taskRepository, UserService userService) {
+        return new TaskServiceImpl(taskRepository, userService);
     }
 
     @Bean

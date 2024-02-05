@@ -9,6 +9,8 @@ import com.anderson.tasklist.core.task.dtos.UpdateTaskDto;
 import com.anderson.tasklist.core.task.model.Task;
 import com.anderson.tasklist.core.task.repository.TaskRepository;
 import com.anderson.tasklist.core.task.services.TaskService;
+import com.anderson.tasklist.core.user.model.User;
+import com.anderson.tasklist.core.user.services.UserService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,9 +19,11 @@ import java.util.UUID;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository repository;
+    private final UserService userService;
 
-    public TaskServiceImpl(TaskRepository repository) {
+    public TaskServiceImpl(TaskRepository repository, UserService userService) {
         this.repository = repository;
+        this.userService = userService;
     }
 
     @Override
@@ -32,7 +36,11 @@ public class TaskServiceImpl implements TaskService {
             throw new InvalidDateException("expiration date must be after today's date !");
         }
 
-        Task task = new Task(idUser, taskDto);
+        Task task = new Task(taskDto);
+
+        User user = this.userService.findById(idUser);
+
+        task.setUser(user);
 
         this.repository.create(task);
     }
@@ -45,7 +53,7 @@ public class TaskServiceImpl implements TaskService {
 
         if(task == null) throw new NotFoundException("Task with id "+ id +" not found !");
 
-        if(task.getIdUser() == idUser) throw new InvalidUserException("the task does not belong to the user !");
+        if(task.getUser().getId() == idUser) throw new InvalidUserException("the task does not belong to the user !");
 
         return task;
     }
@@ -71,7 +79,9 @@ public class TaskServiceImpl implements TaskService {
     public List<Task> findAll(UUID idUser) {
         if(idUser == null) throw new InvalidDataException("Required id !");
 
-        List<Task> tasks = this.repository.findAll(idUser);
+        User user = this.userService.findById(idUser);
+
+        List<Task> tasks = this.repository.findAll(user);
 
         return tasks;
     }
@@ -80,7 +90,9 @@ public class TaskServiceImpl implements TaskService {
     public List<Task> findAllActive(UUID idUser) {
         if(idUser == null) throw new InvalidDataException("Required id !");
 
-        List<Task> tasks = this.repository.findAllActive(idUser);
+        User user = this.userService.findById(idUser);
+
+        List<Task> tasks = this.repository.findAllActive(user);
 
         return tasks;
     }

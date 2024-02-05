@@ -1,6 +1,7 @@
 package com.anderson.tasklist.core.task.model;
 
 import com.anderson.tasklist.core.task.dtos.TaskDto;
+import com.anderson.tasklist.core.user.model.User;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -8,21 +9,20 @@ import java.util.UUID;
 
 public class Task {
     private UUID id;
-    private UUID idUser;
+    private User user;
     private String name;
     private Boolean concluded;
     private LocalDate expirationDate;
 
-    public Task(UUID id, UUID idUser, String name, Boolean concluded, LocalDate expirationDate) {
+    public Task(UUID id, User user, String name, Boolean concluded, LocalDate expirationDate) {
         this.id = id;
-        this.idUser = idUser;
+        this.user = user;
         this.name = name;
         this.concluded = concluded;
         this.expirationDate = expirationDate;
     }
 
-    public Task(UUID idUser, TaskDto taskDto) {
-        this.idUser = idUser;
+    public Task(TaskDto taskDto) {
         this.name = taskDto.name();
         this.concluded = taskDto.concluded();
         this.expirationDate = taskDto.expirationDate();
@@ -32,9 +32,14 @@ public class Task {
         return id;
     }
 
-    public UUID getIdUser() {
-        return idUser;
+    public User getUser() {
+        return user;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 
     public String getName() {
         return name;
