@@ -18,6 +18,9 @@ conjunto com JSON Web Tokens (JWT)
 - JWT (JSON Web Token)
 - JPA / Hibernate
 
+## Arquitetura
+- Arquitetura hexagonal / Clean Code
+
 # Instalação do Projeto
 ## Pré requisito: Java 17 e Docker Desktop
 1. Clone o projeto
