@@ -1,7 +1,6 @@
 package com.anderson.tasklist.external.auth;
 
 import com.anderson.tasklist.core.shared.exceptions.InvalidDataException;
-import com.anderson.tasklist.core.shared.exceptions.InvalidTokenException;
 import com.anderson.tasklist.core.shared.exceptions.TokenGeneratorException;
 import com.anderson.tasklist.core.user.model.User;
 import com.anderson.tasklist.core.user.services.TokenGenerator;

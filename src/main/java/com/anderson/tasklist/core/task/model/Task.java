@@ -40,13 +40,8 @@ public class Task {
         this.user = user;
     }
 
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Boolean getConcluded() {
@@ -59,10 +54,6 @@ public class Task {
 
     public LocalDate getExpirationDate() {
         return expirationDate;
-    }
-
-    public void setExpirationDate(LocalDate expirationDate) {
-        this.expirationDate = expirationDate;
     }
 
     @Override
