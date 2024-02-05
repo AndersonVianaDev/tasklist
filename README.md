@@ -11,6 +11,7 @@ conjunto com JSON Web Tokens (JWT)
 - Java
 - Spring Boot
 - Spring Security
+- Swagger
 - PostgreSQL
 - Gradle
 - Docker
@@ -29,52 +30,11 @@ conjunto com JSON Web Tokens (JWT)
 ```bash
   docker compose up
 ```
-#Documentação de Usuário
+#Documentação da API com SWAGGER
 ```bash
-  # Criar usuário
-  POST localhost:8080/api/v1/users/register
-  {
-    "name": "xxxxxxx",
-    "email": "xxxxxx@xxxx.xxx",
-    "password": "xxxxxxxx" 
-  }
-
-  # Logar usuário
-  POST localhost:8080/api/v1/users/login
-  {
-    "email": "xxxxxx@xxxx.xxx",
-    "password": "xxxxxxxx" 
-  }
-  return "token"
-
-  # Atualizar senha
-  PATCH localhost:8080/api/v1/users/update/id/{id}
-  {
-    "oldPassword": "xxxxxxxxx",
-    "newPassword": "xxxxxxxxxxxx" 
-  }
+   localhost:8080/swagger-ui/index.html#/
 ```
 
-#Documentação de Tarefa
-```bash
-  # Criar Tarefa
-  POST localhost:8080/api/v1/tasks/create/id/{idUser}
-  {
-    "name": "xxxxxxx",
-    "concluded": true || false,
-    "expirationDate": "yyyy-mm-dd" 
-  }
-
-  # Pegar uma tarefa por Id
-  GET localhost:8080/api/v1/tasks/find/id/{id}
-    return task
-
-  # Atualizar a tarefa
-  PATCH localhost:8080/api/v1/tasks/update/id/{id}
-  {
-    "concluded": false || true
-  }
-```
 
 # Autor do projeto
 Anderson Palmerim Viana
