@@ -1,23 +1,21 @@
 package com.anderson.tasklist.adapter.services;
 
 import com.anderson.tasklist.adapter.entities.UserEntityAdapter;
-import com.anderson.tasklist.adapter.repositories.user.AuthorizationRepository;
+import com.anderson.tasklist.adapter.repositories.user.SpringUserRepository;
 import com.anderson.tasklist.core.shared.exceptions.NotFoundException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.UUID;
 
 @Service
 public class AuthorizationService implements UserDetailsService {
 
-    private final AuthorizationRepository repository;
+    private final SpringUserRepository repository;
 
-    public AuthorizationService(AuthorizationRepository repository) {
+    public AuthorizationService(SpringUserRepository repository) {
         this.repository = repository;
     }
 
