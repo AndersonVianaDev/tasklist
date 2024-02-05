@@ -32,12 +32,10 @@ public class TaskController {
         this.tokenService = tokenService;
     }
 
-    @PostMapping("/create/id/{idUser}")
+    @PostMapping("/create")
     @Operation(summary = "create task", method = "POST")
-    public ResponseEntity create(@RequestHeader(name = "Authorization") String token, @PathVariable UUID idUser, @RequestBody TaskDto taskDto) {
-        User user = this.userService.findById(idUser);
-
-        this.tokenService.verifyToken(token, user.getEmail());
+    public ResponseEntity create(@RequestHeader(name = "Authorization") String token, @RequestBody TaskDto taskDto) {
+        UUID idUser = this.tokenService.validateToken(token);
 
         this.service.create(idUser, taskDto);
 
@@ -47,11 +45,9 @@ public class TaskController {
     @GetMapping("/find/id/{id}")
     @Operation(summary = "find by task id", method = "GET")
     public ResponseEntity findById(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id) {
-        String email = this.tokenService.validateToken(token);
+        UUID idUser = this.tokenService.validateToken(token);
 
-        User user = this.userService.findByEmail(email);
-
-        Task task = this.service.findById(user.getId(), id);
+        Task task = this.service.findById(idUser, id);
 
         TaskDto taskDto = this.service.toTaskDto(task);
 
@@ -61,11 +57,9 @@ public class TaskController {
     @DeleteMapping("/delete/id/{id}")
     @Operation(summary = "delete task", method = "DELETE")
     public ResponseEntity delete(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id) {
-        String email = this.tokenService.validateToken(token);
+        UUID idUser = this.tokenService.validateToken(token);
 
-        User user = this.userService.findByEmail(email);
-
-        this.service.delete(user.getId(), id);
+        this.service.delete(idUser, id);
 
         return ResponseEntity.status(HttpStatus.OK).body("Successfully deleted");
     }
@@ -73,23 +67,19 @@ public class TaskController {
     @PatchMapping("/update/id/{id}")
     @Operation(summary = "update task", method = "PATCH")
     public ResponseEntity update(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id, @RequestBody UpdateTaskDto updateTaskDto) {
-        String email = this.tokenService.validateToken(token);
+        UUID idUser = this.tokenService.validateToken(token);
 
-        User user = this.userService.findByEmail(email);
-
-        Task task = this.service.update(user.getId(), id, updateTaskDto);
+        Task task = this.service.update(idUser, id, updateTaskDto);
 
         TaskDto taskDto = this.service.toTaskDto(task);
 
         return ResponseEntity.status(HttpStatus.OK).body(taskDto);
     }
 
-    @GetMapping("/findAll/id/{idUser}")
+    @GetMapping("/findAll")
     @Operation(summary = "find tasks by user id", method = "GET")
-    public ResponseEntity findAll(@RequestHeader(name = "Authorization") String token, @PathVariable UUID idUser) {
-        User user = this.userService.findById(idUser);
-
-        this.tokenService.verifyToken(token, user.getEmail());
+    public ResponseEntity findAll(@RequestHeader(name = "Authorization") String token) {
+        UUID idUser = this.tokenService.validateToken(token);
 
         List<Task> tasks = this.service.findAll(idUser);
 
@@ -98,12 +88,10 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK).body(taskDtos);
     }
 
-    @GetMapping("/findAllActive/id/{idUser}")
+    @GetMapping("/findAllActive")
     @Operation(summary = "find active tasks by user id", method = "GET")
-    public ResponseEntity<List<TaskDto>> findAllActive(@RequestHeader(name = "Authorization") String token, @PathVariable UUID idUser) {
-        User user = this.userService.findById(idUser);
-
-        this.tokenService.verifyToken(token, user.getEmail());
+    public ResponseEntity<List<TaskDto>> findAllActive(@RequestHeader(name = "Authorization") String token) {
+        UUID idUser = this.tokenService.validateToken(token);
 
         List<Task> tasks = this.service.findAllActive(idUser);
 

@@ -44,10 +44,10 @@ public class UserController {
 
     @GetMapping("/find/id/{id}")
     @Operation(summary = "find by user id", method = "GET")
-    public ResponseEntity<UserResponseDto> findById(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id) {
-        User user = this.service.findById(id);
+    public ResponseEntity<UserResponseDto> findById(@RequestHeader(name = "Authorization") String token) {
+        UUID idUser = this.tokenService.validateToken(token);
 
-        this.tokenService.verifyToken(token, user.getEmail());
+        User user = this.service.findById(idUser);
 
         UserResponseDto userDto = new UserResponseDto(user.getName(), user.getEmail());
 
@@ -59,7 +59,7 @@ public class UserController {
     public ResponseEntity<UserResponseDto> findByEmail(@RequestHeader(name = "Authorization") String token, @PathVariable String email) {
         User user = this.service.findByEmail(email);
 
-        this.tokenService.verifyToken(token, email);
+        this.tokenService.verifyToken(token, user.getId());
 
         UserResponseDto userDto = new UserResponseDto(user.getName(), user.getEmail());
 
@@ -68,10 +68,10 @@ public class UserController {
 
     @PatchMapping("/update/id/{id}")
     @Operation(summary = "update password", method = "PATCH")
-    public ResponseEntity update(@RequestHeader(name = "Authorization") String token, @PathVariable UUID id, @RequestBody UpdateDto updateDto) {
-        User user = this.service.update(id, updateDto);
+    public ResponseEntity update(@RequestHeader(name = "Authorization") String token, @RequestBody UpdateDto updateDto) {
+        UUID id = this.tokenService.validateToken(token);
 
-        this.tokenService.verifyToken(token, user.getEmail());
+        this.service.update(id, updateDto);
 
         return ResponseEntity.status(HttpStatus.OK).body("Updated password");
     }
@@ -81,7 +81,7 @@ public class UserController {
     public ResponseEntity delete(@RequestHeader(name =  "Authorization") String token, @PathVariable UUID id) {
         User user = this.service.findById(id);
 
-        this.tokenService.verifyToken(token, user.getEmail());
+        this.tokenService.verifyToken(token, user.getId());
 
         this.service.delete(user);
 

@@ -2,11 +2,13 @@ package com.anderson.tasklist.core.user.services;
 
 import com.anderson.tasklist.core.user.model.User;
 
+import java.util.UUID;
+
 public interface TokenGenerator {
 
     String generateToken(User user);
 
-    String validateToken(String token);
+    UUID validateToken(String token);
 
-    void verifyToken(String token, String email);
+    void verifyToken(String token, UUID id);
 }

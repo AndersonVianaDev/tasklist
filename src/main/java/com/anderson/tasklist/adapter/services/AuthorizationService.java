@@ -1,10 +1,16 @@
 package com.anderson.tasklist.adapter.services;
 
+import com.anderson.tasklist.adapter.entities.UserEntityAdapter;
 import com.anderson.tasklist.adapter.repositories.user.AuthorizationRepository;
+import com.anderson.tasklist.core.shared.exceptions.NotFoundException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.UUID;
 
 @Service
 public class AuthorizationService implements UserDetailsService {
@@ -16,7 +22,14 @@ public class AuthorizationService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return this.repository.findByEmail(email);
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+        UUID idUser = UUID.fromString(id);
+        UserEntityAdapter user = this.repository.findById(idUser).orElseThrow(() ->  new NotFoundException("User with id"+ id +" not found"));
+
+        return buildUserDetails(user);
+    }
+
+    public UserDetails buildUserDetails(UserEntityAdapter user) {
+        return new UserEntityAdapter(user.toUser());
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.UUID;
 
 @Component
 public class TokenService implements TokenGenerator {
@@ -27,7 +28,7 @@ public class TokenService implements TokenGenerator {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withIssuer("auth-api")
-                    .withSubject(user.getEmail())
+                    .withSubject(user.getId().toString())
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException e) {
@@ -36,24 +37,24 @@ public class TokenService implements TokenGenerator {
     }
 
     @Override
-    public String validateToken(String token) {
+    public UUID validateToken(String token) {
         try {
             token = token.replace("Bearer ", "");
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.require(algorithm)
+            return UUID.fromString(JWT.require(algorithm)
                     .withIssuer("auth-api")
                     .build()
                     .verify(token)
-                    .getSubject();
+                    .getSubject());
         } catch (JWTVerificationException e) {
-            return "";
+            return null;
         }
     }
 
-    public void verifyToken(String token, String email) {
-        String emailToken = validateToken(token);
+    public void verifyToken(String token, UUID idUser) {
+        UUID id = validateToken(token);
 
-        if(!emailToken.equals(email)) {
+        if(!id.equals(idUser)) {
             throw new InvalidDataException("Not authorized");
         }
     }
