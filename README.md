@@ -18,10 +18,10 @@ conjunto com JSON Web Tokens (JWT)
 - JPA / Hibernate
 
 # Instalação do Projeto
-## Pré requisito: Java 17
+## Pré requisito: Java 17 e Docker Desktop
 1. Clone o projeto
 ```bash
-  git clone git@github.com:AndersonVianaDev/to-do-list.git
+  git clone git@github.com:AndersonVianaDev/tasklist.git
 ```
 2. Instalar as dependências com o gradle
 3. Instalar o Docker
@@ -38,6 +38,7 @@ conjunto com JSON Web Tokens (JWT)
     "email": "xxxxxx@xxxx.xxx",
     "password": "xxxxxxxx" 
   }
+
   # Logar usuário
   POST localhost:8080/api/v1/users/login
   {
@@ -66,12 +67,12 @@ conjunto com JSON Web Tokens (JWT)
 
   # Pegar uma tarefa por Id
   GET localhost:8080/api/v1/tasks/find/id/{id}
-  return task
+    return task
 
   # Atualizar a tarefa
   PATCH localhost:8080/api/v1/tasks/update/id/{id}
   {
-	  "concluded": false || true
+    "concluded": false || true
   }
 ```
 
