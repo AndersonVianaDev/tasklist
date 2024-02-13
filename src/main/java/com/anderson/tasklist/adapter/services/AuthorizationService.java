@@ -24,10 +24,6 @@ public class AuthorizationService implements UserDetailsService {
         UUID idUser = UUID.fromString(id);
         UserEntityAdapter user = this.repository.findById(idUser).orElseThrow(() ->  new NotFoundException("User with id"+ id +" not found"));
 
-        return buildUserDetails(user);
-    }
-
-    public UserDetails buildUserDetails(UserEntityAdapter user) {
-        return new UserEntityAdapter(user.toUser());
+        return user;
     }
 }
